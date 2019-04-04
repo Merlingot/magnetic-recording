@@ -1,18 +1,18 @@
 clear all
-%% Constantes &  ParamËtres
-rho = 8.9e3;    % densitÈ du cobalt
-cp = 420;       % capacitÈ thermique du cobalt
+%% Constantes &  Param√®tres
+rho = 8.9e3;    % densit√© du cobalt
+cp = 420;       % capacit√© thermique du cobalt
 
-K = 100;        % conductivitÈ thermique du cobalt
+K = 100;        % conductivit√© thermique du cobalt
 E = 10;         % coefficient de transfert thermique air-cobalt (sans rotation du disque)
 c = cp*rho;     % constante c=cp*rho
 a = c/K;        % constante alpha = cp*rho/K
 
-Tc = 300;                   % TempÈrature Cobalt (300 K)
-Tair = 300;                 % TempÈrature Air
-TCurie = 320 + 375.15;      % TempÈrature de Curie du Cobalt (320 C)
+Tc = 300;                   % Temp√©rature Cobalt (300 K)
+Tair = 300;                 % Temp√©rature Air
+TCurie = 320 + 375.15;      % Temp√©rature de Curie du Cobalt (320 C)
 
-%%% paramËtres :
+%%% param√®tres :
 global Nx Ny
 Nx = 20; Lx = 20e-9; hx = Lx/(Nx-1);
 Ny = 20; Ly = 20e-9; hy = Ly/(Ny-1);
@@ -21,7 +21,7 @@ N = Nx*Ny*Nz;
 Lt = 10e-9; Nt = 100;  dt = Lt/Nt;   %Pas de temps
 
 %%% valeurs initiales:
-T0 = ones(N,1)*Tc;  % Distribution de tempÈrature initiale
+T0 = ones(N,1)*Tc;  % Distribution de temp√©rature initiale
 t0 = 0e-9;          % Temps initial
 
 %%% function handle :
@@ -29,12 +29,12 @@ index = @findex;
 
 %% Initialisation des matrices M et A
 
-% H = sparse(N,N);      %sparse NxN zeros matrix - Termes de Maillage non uniforme (¿ faire)
+% H = sparse(N,N);      %sparse NxN zeros matrix - Termes de Maillage non uniforme (√Ä faire)
 M = sparse(N,N);      %sparse NxN identity matrix - Ne change pas dans le temps
 A = sparse(N,N);      %sparse NxN zeros matrix - Ne change pas dans le temps
 b0 = zeros(N,1);      %vecteur 1xN 
 vect = zeros(0,Nt);   %vecteur des temps tn
-PPP = zeros(N, Nt);   %vecteur avec les solutions ‡ tous les temps tn
+PPP = zeros(N, Nt);   %vecteur avec les solutions √† tous les temps tn
 
 tic
 for k = 1:Nz
@@ -46,15 +46,15 @@ for k = 1:Nz
             % ---------------------------------------
             % 1. Conditions de Diriclet -------------
             if (i==Nx)
-                % noeud ‡ la surface interne  x=Lx
+                % noeud √† la surface interne  x=Lx
                 A(l,l)=1; b0(l) = Tc;
                 
             elseif (j==Ny)
-                % noeud ‡ la surface interne  y=Ly
+                % noeud √† la surface interne  y=Ly
                 A(l,l)=1; b0(l) = Tc;
                 
             elseif (k==Nz)
-                % noeud ‡ la surface interne  z=Lz
+                % noeud √† la surface interne  z=Lz
                 A(l,l)=1; b0(l) = Tc;
                 % ----------------------------------------
                 
@@ -63,13 +63,13 @@ for k = 1:Nz
                     % Contribution du point i,j,k
                     A(l,l) = 1 + 2*dt*a^-1*( hx^-2 + hy^-2 + hz^-2);
                     M(l,l) = 1;
-                    % La contribution du terme source sera initialisÈ dans la rÈsolution
+                    % La contribution du terme source sera initialis√© dans la r√©solution
                     % temporelle
 
                     % ----------------------------------------
-                    if (i==1)  %rÈflexion en x=0
+                    if (i==1)  %r√©flexion en x=0
                         A(l,l) = A(l,l) - dt*a^-1*hx^-2*(4/3);
-                        % Contribution suplÈmentaire du point i+1,j,k
+                        % Contribution supl√©mentaire du point i+1,j,k
                         c = index(i+1,j,k); A(l,c) = -1*dt*a^-1*hx^-2*(1 -1/3);
                     else
                         % Contribution du point i-1,j,k
@@ -78,9 +78,9 @@ for k = 1:Nz
                         c = index(i+1,j,k); A(l,c) = -1*dt*a^-1*hx^-2;
                     end
                     
-                    if (j==1) %rÈflexion en y=0
+                    if (j==1) %r√©flexion en y=0
                         A(l,l) = A(l,l) - dt*a^-1*hy^-2*(4/3);
-                        % Contribution suplÈmentaire du point i,j+1,k
+                        % Contribution supl√©mentaire du point i,j+1,k
                         c = index(i,j+1,k); A(l,c) = -1*dt*a^-1*hy^-2*(1-1/3);
                     else
                         % Contribution du point i,j-1,k
@@ -110,7 +110,7 @@ end
 t1 = toc;
 
 
-%% RÈsolution dans le temps
+%% R√©solution dans le temps
 bn = b0; Tn = T0;
 Ainv = inv(A);
 SSS = zeros(Nx,Ny,Nz, Nt);
@@ -118,7 +118,7 @@ SSS = zeros(Nx,Ny,Nz, Nt);
 tic
 for n =0:Nt 
     
-    % DÈfinir bn (terme source) ‡ chaque temps tn:
+    % D√©finir bn (terme source) √† chaque temps tn:
     % Change seulement pour certains noeuds
     
     tn = t0 + dt*n;
@@ -171,7 +171,7 @@ for  i = 1:Nt
     xlabel('x')
     ylabel('y')
     zlabel('z')
-    title('TempÈrature')
+    title('Temp√©rature')
     an = annotation('textbox',dim,'String',str,'FitBoxToText','on');
     
     subplot(1,3,2)
@@ -182,7 +182,7 @@ for  i = 1:Nt
     xlabel('x')
     ylabel('y')
     zlabel('z')
-    title('RÈgions de tempÈrature supÈrieure ‡ la tempÈrature de Curie')
+    title('R√©gions de temp√©rature sup√©rieure √† la temp√©rature de Curie')
     caxis([0 1])
     
     subplot(1,3,3)
@@ -199,8 +199,8 @@ end
 
 fprintf('fin')
 
-%% Choses ‡ amÈliorer
-%1. Vecteur du terme source -> changer les boucles for pour des opÈrations
+%% Choses √† am√©liorer
+%1. Vecteur du terme source -> changer les boucles for pour des op√©rations
 %   matricielles
 
 
