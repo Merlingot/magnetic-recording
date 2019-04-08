@@ -1,10 +1,7 @@
 function y = elecM(X,Y,Z, t)
 % Champ électrique émis par l'antenne
 
-    
-
-    Pui = 1e6;                %Puissance du laser (crète)
-    % Pcrete*dt=Pmoy*Tauxderépétition
+    Pui = 5e5;              %Puissance du laser (crète) % Pcrete*dt=Pmoy*Tauxderépétition
     
     ant = 10e-9;            %Dimension de l'antenne
     k = 100;                %Conductivité thermique du cobalt
@@ -19,8 +16,7 @@ function y = elecM(X,Y,Z, t)
     % dipole = p*[1,0,0];
     p = Pui*4*pi*eps0*ant^3;      %Norme du dipole
     px = 1*p; py = 0*p; pz = 0*p;       %Composantes du dipole
-    
-    
+       
     ZZ = Z + d;
     r = ( X.^2 + Y.^2 + ZZ.^2).^(1/2);
     uX = X./r; uY = Y./r; uZ = ZZ./r;
@@ -32,7 +28,6 @@ function y = elecM(X,Y,Z, t)
     
     normP = ( pX.^2 + pY.^2 + pZ.^2).^(1/2);
     y = normP*E./Er;
-    
-    
+
 end
 

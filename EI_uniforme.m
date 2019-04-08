@@ -12,12 +12,14 @@ Tc = 300;                   % Température Cobalt (300 K)
 Tair = 300;                 % Température Air
 TCurie = 320 + 273.15;      % Température de Curie du Cobalt (320 C)
 
+Ldiff = (K*3e-9/(cp*rho))^(1/2);    %Longueur de diffusion
+
 %%% paramètres :
-Nx = 20; Lx = 20e-9; hx = Lx/(Nx-1); 
-Ny = 20; Ly = 20e-9; hy = Ly/(Ny-1); 
-Nz = 20; Lz = 20e-9; hz = Lz/(Nz-1); 
+Nx = 15; Lx = 20e-9; hx = Lx/(Nx-1); 
+Ny = 15; Ly = 20e-9; hy = Ly/(Ny-1); 
+Nz = 15; Lz = 20e-9; hz = Lz/(Nz-1); 
 N = Nx*Ny*Nz;
-Lt = 10e-9; Nt = 10;  dt = Lt/Nt;   %Pas de temps
+Lt = 20e-9; Nt = 50;  dt = Lt/Nt;   %Pas de temps
 
 %%% valeurs initiales:
 T0 = ones(N,1)*Tc;  % Distribution de température initiale
@@ -28,7 +30,7 @@ index = @findex;
 
 %% Initialisation des matrices M et A
 
-% H = sparse(N,N);      %sparse NxN zeros matrix - Termes de Maillage non uniforme (À faire)
+% H = sparse(N,N);    %sparse NxN zeros matrix - Termes de Maillage non uniforme (À faire)
 M = sparse(N,N);      %sparse NxN identity matrix - Ne change pas dans le temps
 A = sparse(N,N);      %sparse NxN zeros matrix - Ne change pas dans le temps
 b0 = zeros(N,1);      %vecteur 1xN 
@@ -111,11 +113,11 @@ t1 = toc;
 
 
 %% Résolution dans le temps
-bn = b0; Tn = T0;
+bn = zeros([N,1]); Tn = T0;
 Ainv = inv(A);
 
-%à changer lorsque maillage non uniforme
-x = linspace(0,Lx, Nx); y = linspace(0,Ly, Ny); z = linspace(0,Lz, Nz);
+% À changer lorsque maillage non uniforme
+x = linspace(0,Lx, Nx); y = linspace(0,Ly,Ny); z = linspace(0,Lz,Nz); 
 [X,Y,Z] = meshgrid(x,y,z);
 SSS = zeros(Nx,Ny,Nz,Nt) ;
 
@@ -123,22 +125,21 @@ tic
 for n =0:Nt 
     
     tn = t0 + dt*n;
-    % Définir bn (terme source) à chaque temps tn:
-    % Change seulement pour certains noeuds (assuré par la matrice I)
-    S = K^-1*fSourceM(X,Y,Z, tn);
-    SSS(:,:,:,n+1) = S; %enregistrer le terme source à chaque temps tn
-    s = I*reshape(S,[N,1]);
-    bn = b0 + dt*a^-1*s;
-    
     vect(n+1) = tn;
+    
+    % Définir bn (terme source) à chaque temps tn:
+    S = K^-1*fSourceM(X,Y,Z,tn);
+    SSS(:,:,:,n+1) = S; 
+    vecS = I*reshape(S,[N,1]);
+    bn = b0 + dt*a^-1*vecS;
+    
+    %Résolution
     b = M*Tn + bn; 
     Tnplus1 = Ainv*b;
     PPP(:, n+1) = Tnplus1; 
     Tn = Tnplus1;
 end
 t2=toc;
-
-
 
 %% Visualisation
 an = [];
@@ -165,7 +166,8 @@ for  i = 1:Nt
     title('Température')
     ti = vect(i);
     str = ['t = ' num2str(ti) ' s'];
-    delete(an); an = annotation('textbox',dim,'String',str,'FitBoxToText','on');
+    delete(an); 
+    an = annotation('textbox',dim,'String',str,'FitBoxToText','on');
     
     subplot(1,3,2)
     Tbool = double(Tr>TCurie);
@@ -187,15 +189,13 @@ for  i = 1:Nt
     zlabel('z')
     title('Terme source')
     
-    pause %%Pour voir frame par frame
+    drawnow %%Pour voir frame par frame
 end
 
 fprintf('fin')
 
 %% Choses à améliorer
-%1. Vecteur du terme source -> changer les boucles for pour des opérations
-%   matricielles
-%2. Trouver la puissance du laser qui a de l'allure
+%1. Trouver la puissance du laser qui a de l'allure
 
 
 %%
