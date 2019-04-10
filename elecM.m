@@ -1,7 +1,7 @@
-function y = elecM(X,Y,Z, t)
+function y = elecM(X,Y,Z, t, Pui)
 % Champ électrique émis par l'antenne
 
-    Pui = 5e5;              %Puissance du laser (crète) % Pcrete*dt=Pmoy*Tauxderépétition
+    %Puissance du laser (crète) % Pcrete*dt=Pmoy*Tauxderépétition
     
     ant = 10e-9;            %Dimension de l'antenne
     k = 100;                %Conductivité thermique du cobalt

@@ -14,6 +14,8 @@ TCurie = 320 + 273.15;      % Température de Curie du Cobalt (320 C)
 
 Ldiff = (K*3e-9/(cp*rho))^(1/2);    %Longueur de diffusion
 
+pui = 1e6; %puissance du laser
+
 %%% paramètres :
 Nx = 15; Lx = 20e-9; hx = Lx/(Nx-1); 
 Ny = 15; Ly = 20e-9; hy = Ly/(Ny-1); 
@@ -128,7 +130,7 @@ for n =0:Nt
     vect(n+1) = tn;
     
     % Définir bn (terme source) à chaque temps tn:
-    S = K^-1*fSourceM(X,Y,Z,tn);
+    S = K^-1*fSourceM(X,Y,Z,tn, pui);
     SSS(:,:,:,n+1) = S; 
     vecS = I*reshape(S,[N,1]);
     bn = b0 + dt*a^-1*vecS;
@@ -152,7 +154,7 @@ xslice = [0,Lx];
 yslice = [0,Ly];
 zslice = [0, Lz];
 
-for  i = 1:Nt 
+for  i = 1:Nt+1 
     Tr = reshape(PPP(:,i),[Nx,Ny,Nz]);
     Sr = SSS(:,:,:,i);
     
