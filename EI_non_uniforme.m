@@ -26,8 +26,6 @@ Lt = 20e-9; Nt = 50;  dt = Lt/Nt;   %Pas de temps
 T0 = ones(N,1)*Tc;  % Distribution de température initiale
 t0 = 0e-9;          % Temps initial
 
-%%% function handle :
-index = @findex;
 
 %% Maillage non uniforme
 tic
@@ -75,7 +73,7 @@ A = sparse(N,N);      %sparse NxN zeros matrix - Ne change pas dans le temps
 b0 = zeros(N,1);      %vecteur 1xN 
 vect = zeros(0,Nt);   %vecteur des temps tn
 PPP = zeros(N, Nt);   %vecteur avec les solutions à tous les temps tn
-I = eye(N,N);         %matrice qui multiplie le vecteur b (éléments nuls pour x,y,z=Nx,Ny,Nz)
+I = speye(N,N);         %matrice qui multiplie le vecteur b (éléments nuls pour x,y,z=Nx,Ny,Nz)
 
 % Définition de la matrice des coefficients 
 tic
@@ -245,12 +243,3 @@ for  i = 1:Nt+1
 end
 
 fprintf('fin')
-
-%% Sauver les données du workspace :
-% save('NU_30')
-
-%%
-function m = findex(nx, ny, nz, Nx, Ny)
-% index d'un noeud (ijk) dans une matrice 1D
-m = (nz-1)*Nx*Ny + (ny-1)*Nx + nx;
-end

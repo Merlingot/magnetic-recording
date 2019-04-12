@@ -1,4 +1,4 @@
-f = load('convg_spa_NU_30_0.1.mat');
+f = load('NU_CS_30_01.mat');
 PPP = f.PPP; SSS=f.SSS; 
 X=f.X; Y=f.Y; Z=f.Z;
 Nx=f.Nx; Ny=f.Ny; Nz=f.Nz;
@@ -11,7 +11,7 @@ TCurie = 320 + 273.15;
 %%%POUR L'AFFICHAGE
 an = [];
 dim = [0.08 0.08 0.025 0.025];
-q=int16(1);
+q=int16(4);
 Nx = int16(Nx); Ny=int16(Ny);Nz=int16(Nz);
 Tmax = max(PPP,[], 'all');
 Smax = max(SSS,[], 'all');

@@ -24,8 +24,6 @@ pui = 1e5;
 % Stretching 
 ee=0.1;
 
-%%% function handle :
-index = @findex;
 
 tic
 for nbre=5:5:30
@@ -206,8 +204,3 @@ end
 
 t_tot=toc;
 
-%%
-function m = findex(nx, ny, nz, Nx, Ny)
-% index d'un noeud (ijk) dans une matrice 1D
-m = (nz-1)*Nx*Ny + (ny-1)*Nx + nx;
-end

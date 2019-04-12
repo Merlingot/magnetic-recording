@@ -196,12 +196,6 @@ end
 
 fprintf('fin')
 
-%% Choses à améliorer
-%1. Trouver la puissance du laser qui a de l'allure
 
 
-%%
-function m = findex(nx, ny, nz, Nx, Ny)
-% index d'un noeud (ijk) dans une matrice 1D
-m = (nz-1)*Nx*Ny + (ny-1)*Nx + nx;
-end
+
