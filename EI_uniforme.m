@@ -27,8 +27,6 @@ Lt = 20e-9; Nt = 50;  dt = Lt/Nt;   %Pas de temps
 T0 = ones(N,1)*Tc;  % Distribution de température initiale
 t0 = 0e-9;          % Temps initial
 
-%%% function handle :
-index = @findex;
 
 %% Initialisation des matrices M et A
 
