@@ -17,8 +17,8 @@ pui = 1e5; %Puissance laser
 
 %%% paramètres :
 Nx = 15; Lx = Ldiff;  
-Ny = 15; Ly = Ldiff; 
-Nz = 15; Lz = Ldiff; 
+Ny = 10; Ly = Ldiff; 
+Nz = 10; Lz = Ldiff; 
 N = Nx*Ny*Nz;
 Lt = 20e-9; Nt = 50;  dt = Lt/Nt;   %Pas de temps
 
@@ -64,7 +64,7 @@ for i=3:Nz
 end
 t3=toc;
 
-[X,Y,Z] = meshgrid(x,y,z);
+[X,Y,Z] = meshgrid(y,x,z); %Attention! il faut inverser x et y à cause de meshgrid
 
 %% Initialisation des matrices M et A
 
@@ -177,7 +177,7 @@ for n =0:Nt
     
     % Définir bn (terme source) à chaque temps tn:
     S = K^-1*fSourceM(X,Y,Z,tn, pui);
-    SSS(:,:,:,n+1) = S; 
+    SSS(:,:,:,n+1) = S; %pas optimal mais doit etre pareil au terme source
     vecS = I*reshape(S,[N,1]);
     bn = b0 + dt*a^-1*vecS;
     
@@ -202,7 +202,7 @@ xslice = 0; yslice =0; zslice=0;
 %%%
 
 for  i = 1:Nt+1 
-    Trr = reshape(PPP(:,i),[Nx,Ny,Nz]);
+    Trr = reshape(PPP(:,i),size(X));
     Sr = SSS(1:Nx/q, 1:Ny/q, 1:Nz/q, i);
     Tr = Trr(1:Nx/q, 1:Ny/q, 1:Nz/q);
     subplot(1,3,1)

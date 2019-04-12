@@ -38,7 +38,7 @@ vect = zeros(0,Nt);   %vecteur des temps tn
 PPP = zeros(N, Nt);   %vecteur avec les solutions à tous les temps tn
 I = eye(N,N);         %matrice qui multiplie le vecteur b (élément nul pour Nx,Ny,Nz)
 
-tic
+
 for k = 1:Nz
     for j=1:Ny
         for i=1:Nx
@@ -109,7 +109,7 @@ for k = 1:Nz
         end
     end
 end
-t1 = toc;
+
 
 
 %% Résolution dans le temps
@@ -118,10 +118,10 @@ Ainv = inv(A);
 
 % À changer lorsque maillage non uniforme
 x = linspace(0,Lx, Nx); y = linspace(0,Ly,Ny); z = linspace(0,Lz,Nz); 
-[X,Y,Z] = meshgrid(x,y,z);
+[X,Y,Z] = meshgrid(y,x,z); %Attention! il faut inverser x et y à cause de meshgrid
 SSS = zeros(Nx,Ny,Nz,Nt) ;
 
-tic
+
 for n =0:Nt 
     
     tn = t0 + dt*n;
@@ -139,7 +139,7 @@ for n =0:Nt
     PPP(:, n+1) = Tnplus1; 
     Tn = Tnplus1;
 end
-t2=toc;
+
 
 %% Visualisation
 an = [];

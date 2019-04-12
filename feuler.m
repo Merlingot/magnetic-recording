@@ -61,7 +61,7 @@ for i=3:Nz
 end
 tmail=toc(t1);
 
-[X,Y,Z] = meshgrid(x,y,z);
+[X,Y,Z] = meshgrid(y,x,z); %Attention! il faut inverser x et y à cause de meshgrid
 
 %% Initialisation des matrices et vecteurs
 

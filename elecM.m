@@ -11,7 +11,7 @@ function y = elecM(X,Y,Z, t, Pui)
     w = 2*pi*3e8/Lambda;    %Fréquence
     t0 = 5*tau0;            %Délai t0
     eps0 = 8.85e-12;        %Permitivité du vide
-    d = 1e-9;               %Distance entre l'antenne et le substrat.
+    d = 1e-9;               %Distance entre l'antenne et le substrat (1nm). 
 
     % dipole = p*[1,0,0];
     p = Pui*4*pi*eps0*ant^3;      %Norme du dipole
