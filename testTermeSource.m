@@ -15,7 +15,7 @@ zslice = [0,L];
 for i = 0:Nt
     
     title('matriciel');
-    y = fSourceM(X,Y,Z,i*dt);
+    y = fSourceM(X,Y,Z,i*dt, 1e5);
     slice(X,Y,Z,y,xslice,yslice,zslice)
     colorbar
     drawnow

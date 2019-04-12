@@ -4,9 +4,8 @@ cp = 420;       % capacité thermique du cobalt
 K = 100;        % conductivité thermique du cobalt
 l = (K*3e-9/(cp*rho))^(1/2);
 
-N = 45;e = 0.15;
-
-syms k  ; 
+N = 45; e = 0.15;
+syms k;
 s = symsum( (1+e)^(k-2), k, 2, N);
 h0  = double(2*l/s);
 
@@ -18,8 +17,8 @@ for i=3:N
     himoins1=hi; ximoins1 = xi;
 end
 
-%%
-% plot(H, 'o')
+
+plot(H, 'o')
 plot(X, exp(-X/l), 'x')
 
 
