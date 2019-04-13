@@ -170,7 +170,7 @@ Ainv = inv(A);
 SSS = zeros(Nx,Ny,Nz,Nt);
 
 tic
-for n =0:Nt 
+for n =0:Nt-1
     
     tn = t0 + dt*n;
     vect(n+1) = tn;

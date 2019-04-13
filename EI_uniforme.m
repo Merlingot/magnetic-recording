@@ -122,7 +122,7 @@ x = linspace(0,Lx, Nx); y = linspace(0,Ly,Ny); z = linspace(0,Lz,Nz);
 SSS = zeros(Nx,Ny,Nz,Nt) ;
 
 
-for n =0:Nt 
+for n =0:Nt-1
     
     tn = t0 + dt*n;
     vect(n+1) = tn;
