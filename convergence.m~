@@ -66,11 +66,10 @@ for n=1:length(NN)
         errl = sum( abs(sol(:,l) - sol2(:,l)), 'all');
         err(l)=errl;
     end
-%     errt(:,n) = err; %ça marche pas parce que le nombre de points change
-%     (Nt)
+    errt(:,n) = err;
     
 end
-errmax = max(errs); 
+errmax = max(errs);
 
 filename='convg_temp.mat';
 save(filename, 'NN', 'errt', 'errmax', 'vect_dt', 'tN', 'memN')

@@ -1,4 +1,4 @@
-function [PPP, t_tot]=feuler2(x, y, z, Hx, Hy, Hz,Nt, pui, ee)
+function [PPP, t_tot, memA]=feuler_conv(x, y, z, Hx, Hy, Hz,Nt, pui, ee)
 
 % Constantes &  Paramètres
 t4 = tic;
@@ -120,9 +120,10 @@ for k = 1:Nz
 end
 tmat = toc(t2);
 
+memA = 16*nnz(A);  %mémoire occupée par la matrice A
 
 %% Résolution dans le temps
-bn = zeros([N,1]); Tn = T0;
+Tn = T0;
 Ainv = inv(A);
 SSS = zeros(Nx,Ny,Nz,Nt); %Terme source aux temps tn
 
