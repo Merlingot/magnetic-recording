@@ -6,8 +6,7 @@ pui=1e5; ee=0.2; Lt = 20e-9; Ny = 20; Nz = 20;
 
 %% Convergence spaciale :
 Nt=50; dt = Lt/Nt;
-% N = [10,11,12,13,14,15,16,17,18,19,20]; %Vecteurs avec le nombre de points en x
-N = [10,11];
+N = [10,11,12,13,14,15,16,17,18,19,20]; %Vecteurs avec le nombre de points en x
 %Changement de dx:
 for n=1:length(N)
     %2 fois plus de points
@@ -21,6 +20,7 @@ for n=1:length(N)
     for i=1:length(x)-1
         Hx(i+1) = x(i+1) - x(i);
     end
+    Hxn(n) = mean(Hx);
     [sol,t, mem] = feuler_conv(x,y,z,Hx,Hy,Hz,Nt, pui, ee);
     
     %enregistrement du temps et mémoire:
@@ -33,19 +33,21 @@ for n=1:length(N)
     sol2 = sol2(1:2:end, :, :, :);
     for l=1:Nt
         errl = sum( abs(sol(:,:,:,l) - sol2(:,:,:,l)), 'all');
-        err(l)=errl;
+        err(l)=errl/sum( abs(sol(:,:,:,l)), 'all');
     end
+     %err : vecteur avec les erreurs sur le maillage spatial pout chacun des points de temps
+     %errt : vecteur err pour chacun des pas dx (Nx) essayé
     errt(:,n) = err;
 end
-errmax = max(errt);
+errmoy = mean(errt); %vecteur avec les erreurs max pour chaque Nx essayé
 
 vect=(0:Nt-1)*dt;
 filename='convg_spatiale.mat';
-save(filename, 'N', 'errt', 'errmax','tN', 'memN', 'vect', 'Hx2','Hx')
+save(filename, 'N', 'errt', 'errmoy','tN', 'memN', 'vect', 'Hx2','Hxn')
 
 
 %% Convergence temporelle
-NN = [10,15]; 
+NN = [10, 15,20,25,30,35,40,45,50]; 
 
 Nx=20; [x,y,z,Hx,Hy,Hz] = pointsnu(Nx,Ny,Nz,ee, 3*Ldiff);
 
@@ -57,23 +59,25 @@ for n=1:length(NN)
     [sol,t, mem] = feuler_conv(x,y,z,Hx,Hy,Hz,Nt, pui, ee);
     
     %enregistrement du temps et mémoire:
-    tN(n) = t;      %tN : vecteur avec les temps en fonction de Nx
-    memN(n) = mem;  %memN : vecteur avec la mémoire occupée par la matrice des coefficients
+    tNN(n) = t;      %tN : vecteur avec les temps en fonction de Nt
+    
+    %memN : vecteur avec la mémoire occupée par la matrice des coefficients
+    %(sert à rien car ne change par avec Nt)
     
     %calcul de l'erreur
     sol2 = sol2(:,1:2:end);
+    errxyz = 0;div=0;
     for l=1:Nt
-        errl = sum( abs(sol(:,l) - sol2(:,l)), 'all');
-        err(l)=errl;
+        errxyz = errxyz + abs( sol(:,l) - sol2(:,l));
+        div = div + abs(sol(:,l));
     end
-%     errt(:,n) = err; %ça marche pas parce que le nombre de points change
-%     (Nt)
-    
+    errxyz = errxyz./div; %vecteur avec les erreurs pour chacun des points x,y,z
+    errs(:,n) =  errxyz; 
 end
-errmax = max(errs); 
+errmoy = mean(errs); 
 
 filename='convg_temp.mat';
-save(filename, 'NN', 'errt', 'errmax', 'vect_dt', 'tN', 'memN')
+save(filename, 'NN', 'errs', 'errmoy', 'vect_dt', 'tNN')
 
 
 
