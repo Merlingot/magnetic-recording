@@ -5,7 +5,7 @@ fx = load('convg_spatiale.mat');
 errmoyt =  ft.errmoy; errmoyx =  fx.errmoy;
 Hxn = fx.Hxn;
 fit1 = fit(ft.vect_dt',errmoyt','power1');
-fit2 = fit(fx.Hxn',errmoyx','power1');
+fit2 = fit(fx.Hxn'*1e9,errmoyx','power1');
 fit3 = fit(ft.NN', ft.tNN', 'power1');
 fit4 = fit(fx.N', fx.tN', 'power1');
 fit5 = fit(fx.N', fx.memN'/1024^3, 'power1');
@@ -23,9 +23,9 @@ hold off
 
 f2 = figure;
 hold on
-plot(Hxn, errmoyx, 'o');
-plot(Hxn, fit2.a*Hxn.^fit2.b)
-title('Erreur moyenne en fonction du pas de dicrétisation moyen en x')
+plot(Hxn*1e9, errmoyx, 'o');
+plot(Hxn*1e9, fit2.a*(Hxn*1e9).^fit2.b)
+title('Erreur moyenne en fonction du pas de dicrétisation moyen en x (nm)')
 xlabel('Pas de discrétisation en x'); ylabel('Erreur moyenne')
 legend('données', '$O(h^3)$', 'Interpreter','latex') 
 saveas(f2,'convergence_spatiale.eps', 'eps')
