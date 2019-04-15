@@ -58,6 +58,6 @@ plot(fx.N, fit5.a*fx.N.^fit5.b);
 title({'Mémoire utilisée en fonction du nombre'; 'de points dans une dimension (espace)'})
 xlabel('Nombre de points'); ylabel('Mémoire (Gb)')
 legend('données', '$\sim N$', 'Interpreter','latex') 
-saveas(f5,'mem_x.eps', 'eps')
+saveas(f5,'mem_x.pdf', 'pdf')
 hold off
 
