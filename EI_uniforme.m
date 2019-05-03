@@ -14,7 +14,7 @@ TCurie = 320 + 273.15;      % Température de Curie du Cobalt (320 C)
 
 Ldiff = (K*3e-9/(cp*rho))^(1/2);    %Longueur de diffusion
 
-pui = 1e6; %puissance du laser
+pui = 1e-3; %puissance du laser
 
 %%% paramètres :
 Nx = 15; Lx = 20e-9; hx = Lx/(Nx-1); 

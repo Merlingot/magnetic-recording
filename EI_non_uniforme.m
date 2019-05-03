@@ -16,7 +16,7 @@ TCurie = 320 + 273.15;      % Température de Curie du Cobalt (320 C)
 pui = 1e5; %Puissance laser
 
 %%% paramètres :
-Nx = 15; Lx = Ldiff;  
+Nx = 10; Lx = Ldiff;  
 Ny = 10; Ly = Ldiff; 
 Nz = 10; Lz = Ldiff; 
 N = Nx*Ny*Nz;
@@ -73,7 +73,7 @@ A = sparse(N,N);      %sparse NxN zeros matrix - Ne change pas dans le temps
 b0 = zeros(N,1);      %vecteur 1xN 
 vect = zeros(0,Nt);   %vecteur des temps tn
 PPP = zeros(N, Nt);   %vecteur avec les solutions à tous les temps tn
-I = speye(N,N);         %matrice qui multiplie le vecteur b (éléments nuls pour x,y,z=Nx,Ny,Nz)
+I = speye(N,N);       %matrice qui multiplie le vecteur b (éléments nuls pour x,y,z=Nx,Ny,Nz)
 
 % Définition de la matrice des coefficients 
 tic

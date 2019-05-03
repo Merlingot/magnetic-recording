@@ -192,7 +192,7 @@ t_tot=toc(t4);
 
 filename = sprintf ( 'NU_CS_%d_0%d.mat', N, round(ee*10) );
 save(filename, 'N', 'pui', 'vect', 'PPP', 'SSS', 'X', 'Y', 'Z',...
-    'Hx', 'Hy', 'Hz', 'tmail', 'tmat', 'tres', 't_tot', 'Nx', 'Ny', 'Nz', 'x', 'y', 'z')
+    'Hx', 'Hy', 'Hz', 'tmail', 'tmat', 'tres', 't_tot', 'Nx', 'Ny', 'Nz', 'x', 'y', 'z', 'A')
 
 end
 

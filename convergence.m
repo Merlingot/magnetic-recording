@@ -2,7 +2,8 @@
 clear all
 rho = 8.9e3; cp = 420; K = 100; Ldiff = (K*3e-9/(cp*rho))^(1/2);
 Lx = 3*Ldiff; Ly = 3*Ldiff; Lz = 3*Ldiff;
-pui=1e5; ee=0.2; Lt = 20e-9; Ny = 20; Nz = 20;
+pui=1e-3; %puissance moyenne
+ee=0.2; Lt = 20e-9; Ny = 20; Nz = 20;
 
 %% Convergence spaciale :
 Nt=50; dt = Lt/Nt;
@@ -20,6 +21,7 @@ for n=1:length(N)
     for i=1:length(x)-1
         Hx(i+1) = x(i+1) - x(i);
     end
+    Hxmin(n) = min(Hx); %vecteur avec le pas d'espace minimal
     Hxn(n) = mean(Hx);
     [sol,t, mem] = feuler_conv(x,y,z,Hx,Hy,Hz,Nt, pui, ee);
     
@@ -39,11 +41,11 @@ for n=1:length(N)
      %errt : vecteur err pour chacun des pas dx (Nx) essayé
     errt(:,n) = err;
 end
-errmoy = mean(errt); %vecteur avec les erreurs max pour chaque Nx essayé
+errmoy = mean(errt); %vecteur avec les erreurs moy pour chaque Nx essayé
 
 vect=(0:Nt-1)*dt;
 filename='convg_spatiale.mat';
-save(filename, 'N', 'errt', 'errmoy','tN', 'memN', 'vect', 'Hx2','Hxn')
+save(filename, 'N', 'errt', 'errmoy','tN', 'memN', 'vect', 'Hx2','Hxn', 'Hxmin')
 
 
 %% Convergence temporelle
@@ -78,13 +80,6 @@ errmoy = mean(errs);
 
 filename='convg_temp.mat';
 save(filename, 'NN', 'errs', 'errmoy', 'vect_dt', 'tNN')
-
-
-
-
-
-
-
 
 
 
