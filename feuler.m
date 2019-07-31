@@ -20,7 +20,7 @@ Tair = 300;                 % Température Air
 t0 = 0e-9; % Temps initial
 Lt = 20e-9;  dt = Lt/Nt;   %Pas de temps
 % Longueur du domaine
-Lx = 3*Ldiff; Ly = 3*Ldiff; Lz = 3*Ldiff;
+Lx = 3*Ldiff/2; Ly = 3*Ldiff/2; Lz = 3*Ldiff;
 
 N = Nx*Ny*Nz;
 %% Définition du Maillage non uniforme
@@ -164,7 +164,6 @@ tmat = toc(t2);
 
 %% Résolution dans le temps
 Tn = T0;
-Ainv = inv(A);
 SSS = zeros(Nx,Ny,Nz,Nt); %Terme source aux temps tn
 
 t3 =tic;
@@ -181,7 +180,7 @@ for n =0:Nt-1
     
     % Résolution
     b = M*Tn + bn;
-    Tnplus1 = Ainv*b;
+    Tnplus1 = A\b;
     PPP(:, n+1) = Tnplus1;
     Tn = Tnplus1;
 end
@@ -193,6 +192,7 @@ t_tot=toc(t4);
 filename = sprintf ( 'NU_CS_%d_0%d.mat', N, round(ee*10) );
 save(filename, 'N', 'pui', 'vect', 'PPP', 'SSS', 'X', 'Y', 'Z',...
     'Hx', 'Hy', 'Hz', 'tmail', 'tmat', 'tres', 't_tot', 'Nx', 'Ny', 'Nz', 'x', 'y', 'z', 'A')
+
 
 end
 
